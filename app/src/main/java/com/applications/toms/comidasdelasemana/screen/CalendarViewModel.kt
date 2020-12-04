@@ -57,11 +57,12 @@ class CalendarViewModel(application: Application, val database: DatabaseDao) : A
         //Usamos una corutina para obtener la data de la BD para no bloquear la UI mientras esperamos los rdos
         uiScope.launch {
             _weeklyMeals.value = getDataFromDataBase()
-            Log.d(TAG, "updateDiner: ${weeklyMeals}")
+            Log.d(TAG, "updateDiner: ${weeklyMeals.value.toString()}")
             if (weeklyMeals.value!!.isEmpty()){
                 for (dailyMeal in initialData.value!!){
                     database.insert(DailyMeals(day = dailyMeal.day,lunch = dailyMeal.lunch,diner = dailyMeal.diner))
                 }
+                _weeklyMeals.value = getDataFromDataBase()
             }
         }
     }
@@ -78,7 +79,6 @@ class CalendarViewModel(application: Application, val database: DatabaseDao) : A
         uiScope.launch {
             database.updateDinerMeal(onDay,onMeal)
             _weeklyMeals.value = getDataFromDataBase()
-            Log.d(TAG, "updateDiner: ${weeklyMeals}")
             _status.value = EditingStatus.DONE
         }
     }
@@ -87,7 +87,6 @@ class CalendarViewModel(application: Application, val database: DatabaseDao) : A
         uiScope.launch {
             database.updateLunchMeal(onDay,onMeal)
             _weeklyMeals.value = getDataFromDataBase()
-            Log.d(TAG, "updateDiner: ${weeklyMeals}")
             _status.value = EditingStatus.DONE
         }
     }
