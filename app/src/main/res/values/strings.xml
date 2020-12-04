@@ -1,13 +1,16 @@
 <resources>
-    <string name="app_name">ComidasDeLaSemana</string>
+    <string name="app_name">Comidas de la Semana</string>
+
+    <string name="lunch">Almuerzo</string>
+    <string name="diner">Cena</string>
 
     //Day of the week
     <string name="monday">Lunes</string>
-    <string name="tuesday">Lunes</string>
-    <string name="wednesday">Lunes</string>
-    <string name="thursday">Lunes</string>
-    <string name="friday">Lunes</string>
-    <string name="saturday">Lunes</string>
-    <string name="sunday">Lunes</string>
+    <string name="tuesday">Martes</string>
+    <string name="wednesday">Miercoles</string>
+    <string name="thursday">Jueves</string>
+    <string name="friday">Viernes</string>
+    <string name="saturday">Sabado</string>
+    <string name="sunday">Domingo</string>
 
 </resources>
