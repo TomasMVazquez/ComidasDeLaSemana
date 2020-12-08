@@ -1,7 +1,9 @@
 package com.applications.toms.comidasdelasemana.database
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 
 @Dao
@@ -10,6 +12,9 @@ interface DatabaseDao {
     //Insertar / Create
     @Insert
     suspend fun insert(item: DailyMeals)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAll(vararg dailyMeals: DailyMeals)
 
     //Obtener / Read
     @Query("SELECT * FROM daily_meals ORDER BY dailyMealId ASC")

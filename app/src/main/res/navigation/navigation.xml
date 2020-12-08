@@ -9,5 +9,15 @@
         android:id="@+id/calendarFragment"
         android:name="com.applications.toms.comidasdelasemana.screen.CalendarFragment"
         android:label="@string/app_name"
-        tools:layout="@layout/fragment_calendar" />
+        tools:layout="@layout/fragment_calendar">
+        <deepLink
+            android:id="@+id/deepLink"
+            app:action="ACTION_VIEW"
+            app:mimeType="type/subtype"
+            app:uri="com.applications.toms.comidasdelasemana/calendario" />
+        <argument
+            android:name="query"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
 </navigation>

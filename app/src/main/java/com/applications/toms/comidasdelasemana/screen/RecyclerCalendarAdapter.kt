@@ -74,6 +74,6 @@ class DailyMealDiffCallback : DiffUtil.ItemCallback<DailyMeals>() {
     }
 
     override fun areContentsTheSame(oldItem: DailyMeals, newItem: DailyMeals): Boolean {
-        return oldItem.lunch == newItem.lunch && oldItem.diner == newItem.diner
+        return oldItem == newItem
     }
 }

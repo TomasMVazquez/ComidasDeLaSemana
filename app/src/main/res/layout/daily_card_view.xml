@@ -22,7 +22,7 @@
         android:layout_marginTop="4dp"
         android:layout_marginStart="2dp"
         android:layout_marginEnd="2dp"
-        app:cardBackgroundColor="@color/design_default_color_secondary_variant"
+        app:cardBackgroundColor="@color/secondaryColor"
         app:cardCornerRadius="15dp"
         android:elevation="8dp"
         >
@@ -70,7 +70,7 @@
                     android:layout_marginTop="2dp"
                     android:gravity="center"
                     android:text="@string/lunch"
-                    android:textColor="@color/secondaryTextColor"
+                    android:textColor="@color/primaryDarkColor"
                     android:textStyle="bold"
                     tools:text="Almuerzo" />
 
@@ -80,6 +80,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     tools:text="Sopa"
+                    android:textColor="@color/primaryTextColor"
                     android:text="@{dailyMeal.lunch}"
                     />
 
@@ -108,7 +109,7 @@
                     android:layout_marginTop="2dp"
                     android:gravity="center"
                     android:text="@string/diner"
-                    android:textColor="@color/secondaryTextColor"
+                    android:textColor="@color/primaryDarkColor"
                     android:textStyle="bold"
                     tools:text="Cena" />
 
@@ -118,6 +119,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     tools:text="Sopa"
+                    android:textColor="@color/primaryTextColor"
                     android:text="@{dailyMeal.diner}"
                     />
 
@@ -143,7 +145,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:gravity="center"
-                    android:textColor="@color/secondaryTextColor"
+                    android:textColor="@color/primaryDarkColor"
                     android:textStyle="bold"
                     tools:text="Cena" />
 

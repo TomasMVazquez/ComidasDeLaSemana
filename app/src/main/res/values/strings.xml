@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Comidas de la Semana</string>
 
+    <string name="share">Compartir</string>
+
+    <string name="day">Dia</string>
     <string name="lunch">Almuerzo</string>
     <string name="diner">Cena</string>
 

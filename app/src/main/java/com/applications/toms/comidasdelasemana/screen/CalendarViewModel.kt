@@ -2,8 +2,12 @@ package com.applications.toms.comidasdelasemana.screen
 
 import android.app.Application
 import android.content.Context
+import android.content.DialogInterface
+import android.net.Uri
 import android.util.Log
 import android.view.View
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -26,12 +30,17 @@ class CalendarViewModel(application: Application, val database: DatabaseDao) : A
 
     //Define a uiScope for the coroutines:
     private val uiScope = CoroutineScope(Dispatchers.Main +  viewModelJob)
+    private val uiScopeDeepLink = CoroutineScope(Dispatchers.IO +  viewModelJob)
 
     private val _weeklyMeals = MutableLiveData<List<DailyMeals>>()
     val weeklyMeals: LiveData<List<DailyMeals>>
         get() = _weeklyMeals
 
     private val initialData = MutableLiveData<List<DailyMeals>>()
+
+    private val _dataDeepLink = MutableLiveData<Uri>()
+    val dataDeepLink: LiveData<Uri>
+        get() = _dataDeepLink
 
     enum class EditingStatus { INITIAL, EDITING, ERROR, DONE }
     //reset EditText Event
@@ -57,7 +66,6 @@ class CalendarViewModel(application: Application, val database: DatabaseDao) : A
         //Usamos una corutina para obtener la data de la BD para no bloquear la UI mientras esperamos los rdos
         uiScope.launch {
             _weeklyMeals.value = getDataFromDataBase()
-            Log.d(TAG, "updateDiner: ${weeklyMeals.value.toString()}")
             if (weeklyMeals.value!!.isEmpty()){
                 for (dailyMeal in initialData.value!!){
                     database.insert(DailyMeals(day = dailyMeal.day,lunch = dailyMeal.lunch,diner = dailyMeal.diner))
@@ -93,11 +101,39 @@ class CalendarViewModel(application: Application, val database: DatabaseDao) : A
 
     fun onStartEditing(day: String,meal:String,mealToChange:String) {
         _status.value = EditingStatus.EDITING
-        if (meal == "diner"){
-            updateDiner(day,mealToChange)
+        if (mealToChange != ""){
+            if (meal == "diner"){
+                updateDiner(day,mealToChange)
+            }else{
+                updateLunch(day,mealToChange)
+            }
         }else{
-            updateLunch(day,mealToChange)
+            _status.value = EditingStatus.DONE
         }
+    }
+
+    //Handle Query Parameter
+    fun startImportingDataFromDeepLink() {
+        dataDeepLink.value?.queryParameterNames!!.forEach { name ->
+            if (name != "day") {
+                _status.value = EditingStatus.EDITING
+                val queryParameterLunch = dataDeepLink.value?.getQueryParameter(name)!!.split("|").get(0).split(":").get(1).replace("_"," ")
+                val queryParameterDiner = dataDeepLink.value?.getQueryParameter(name)!!.split("|").get(1).split(":").get(1).replace("_"," ")
+                uiScopeDeepLink.launch {
+                    database.updateLunchMeal(name,queryParameterLunch)
+                    database.updateDinerMeal(name,queryParameterDiner)
+                }
+            }
+        }
+        uiScope.launch {
+            _weeklyMeals.value = getDataFromDataBase()
+        }
+        _dataDeepLink.value = Uri.EMPTY
+        Log.d(TAG, "startImportingDataFromDeepLink: ${dataDeepLink.value}")
+    }
+
+    fun getDataFromDeepLink(data: Uri?) {
+           _dataDeepLink.value = data
     }
 
     companion object{
